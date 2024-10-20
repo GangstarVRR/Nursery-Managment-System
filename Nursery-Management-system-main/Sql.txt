@@ -1,0 +1,121 @@
+-- Create Plant table
+CREATE TABLE Plant (
+    plantId INT PRIMARY KEY,
+    plantHeight DOUBLE NOT NULL,
+    plantSpread DOUBLE NOT NULL,
+    commonName VARCHAR(255) NOT NULL,
+    bloomTime VARCHAR(255) NOT NULL,
+    medicinalOrCulinaryUse VARCHAR(255) NOT NULL,
+    difficultyLevel VARCHAR(255) NOT NULL,
+    temperature VARCHAR(255) NOT NULL,
+    typeOfPlant VARCHAR(255) NOT NULL,
+    plantDescription VARCHAR(255) NOT NULL,
+    plantsStock INT NOT NULL,
+    plantCost DOUBLE NOT NULL
+);
+
+-- Insert dummy data into Plant table
+INSERT INTO Plant VALUES
+(1, 30.0, 15.0, 'Rose', 'Spring', 'Medicinal', 'Intermediate', '20-25°C', 'Flower', 'Beautiful red rose', 100, 12.99),
+(2, 40.0, 20.0, 'Fern', 'All year', 'Not specified', 'Easy', '15-25°C', 'Foliage', 'Green fern', 150, 8.99);
+
+-- Create Seed table
+CREATE TABLE Seed (
+    seedId INT PRIMARY KEY,
+    commonName VARCHAR(255) NOT NULL,
+    bloomTime VARCHAR(255) NOT NULL,
+    watering VARCHAR(255) NOT NULL,
+    difficultyLevel VARCHAR(255) NOT NULL,
+    temperature VARCHAR(255) NOT NULL,
+    typeOfSeeds VARCHAR(255) NOT NULL,
+    seedsDescription VARCHAR(255) NOT NULL,
+    seedsStock INT NOT NULL,
+    seedsCost DOUBLE NOT NULL,
+    seedsPerPacket INT NOT NULL
+);
+
+-- Insert dummy data into Seed table
+INSERT INTO Seed VALUES
+(1, 'Sunflower', 'Summer', 'Regular', 'Easy', '20-30°C', 'Flower', 'Yellow sunflower seeds', 200, 5.99, 50),
+(2, 'Tomato', 'Summer', 'Regular', 'Intermediate', '18-24°C', 'Vegetable', 'Fresh tomato seeds', 100, 3.99, 30);
+
+-- Create Planter table
+CREATE TABLE Planter (
+    planterId INT PRIMARY KEY,
+    url VARCHAR(255),
+    planterHeight DOUBLE NOT NULL,
+    planterCapacity DOUBLE NOT NULL,
+    drainageHoles INT NOT NULL,
+    planterColor VARCHAR(255) NOT NULL,
+    planterShape VARCHAR(255) NOT NULL,
+    planterStock INT NOT NULL,
+    planterCost INT NOT NULL
+);
+
+-- Insert dummy data into Planter table
+INSERT INTO Planter VALUES
+(1, 'planter1.jpg', 12.0, 10.0, 7, 'Blue', 'Round', 50, 19.99),
+(2, 'planter2.jpg', 15.0, 12.0, 5, 'Red', 'Rectangular', 30, 14.99);
+
+-- Create Customer table
+CREATE TABLE Customer (
+    customerId INT PRIMARY KEY,
+    customerName VARCHAR(255) NOT NULL,
+    mobile VARCHAR(15) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    userName VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    isActive INT DEFAULT 1
+);
+
+-- Insert dummy data into Customer table
+INSERT INTO Customer VALUES
+(1, 'John Doe', '9876543210', 'john.doe@example.com', 'john.doe', 'password123', 1),
+(2, 'Jane Smith', '8765432109', 'jane.smith@example.com', 'jane.smith', 'password456', 1);
+
+-- Create Address table
+CREATE TABLE Address (
+    addressId INT PRIMARY KEY,
+    houseNo VARCHAR(255) NOT NULL,
+    colony VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL,
+    state VARCHAR(255) NOT NULL,
+    pinCode INT NOT NULL,
+    addressType VARCHAR(255) NOT NULL
+);
+
+-- Insert dummy data into Address table
+INSERT INTO Address VALUES
+(1, '123', 'Garden Street', 'Cityville', 'Stateville', 123456, 'Home'),
+(2, '456', 'Green Lane', 'Townsville', 'Stateville', 654321, 'Office');
+
+-- Create Orders table
+CREATE TABLE Orders (
+    bookingOrderId INT PRIMARY KEY,
+    orderDate DATE NOT NULL,
+    transactionMode VARCHAR(255) NOT NULL,
+    quantity INT NOT NULL,
+    totalCost DOUBLE NOT NULL,
+    customerId INT,
+    FOREIGN KEY (customerId) REFERENCES Customer(customerId)
+);
+
+-- Insert dummy data into Orders table
+INSERT INTO Orders VALUES
+(1, '2023-06-15', 'Credit Card', 2, 25.98, 1),
+(2, '2023-06-20', 'PayPal', 1, 14.99, 2);
+
+-- Create relationship between Orders and Planter tables
+CREATE TABLE OrderPlanter (
+    orderId INT,
+    planterId INT,
+    PRIMARY KEY (orderId, planterId),
+    FOREIGN KEY (orderId) REFERENCES Orders(bookingOrderId),
+    FOREIGN KEY (planterId) REFERENCES Planter(planterId)
+);
+
+-- Insert dummy data into OrderPlanter table
+INSERT INTO OrderPlanter VALUES
+(1, 1),
+(1, 2),
+(2, 1);

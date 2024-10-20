@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>View All Plants</title>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: auto;
+        text-align: center;
+        padding: 0;
+        width: 90%;
+      }
+
+      table {
+        width: 100%;
+        margin: auto;
+        text-align: center;
+      }
+
+      table th,
+      table td,
+      table tr {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+        color: black;
+        height: 20px;
+        background-color: white;
+      }
+
+      table th {
+        background-color: rgb(150, 200, 100);
+        color: white;
+      }
+
+      .planterImg {
+        width: 25%;
+        padding: 0;
+      }
+
+      .planterImg > img {
+        width: 50%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Planter Data</h1>
+    <table>
+      <!-- Dont change order of columns -->
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>commonName</th>
+          <th>bloomTime</th>
+          <th>watering</th>
+          <th>difficultyLevel</th>
+          <th>temperature</th>
+          <th>typeOfSeeds</th>
+          <th>seedDescription</th>
+          <th>Stock</th>
+          <th>Cost</th>
+          <th>seedsPerPacket</th>
+          <th>Cart</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Append your output here -->
+      </tbody>
+    </table>
+  </body>
+</html>
+
+<script>
+  let responseObj = [];
+
+  function getData(todoarr) {
+    document.querySelector("tbody").innerHTML = "";
+    todoarr.forEach(function (elem) {
+      // document.querySelector("tbody").innerHTML= "";     If we do this here, it will lead to updation of earh tds
+      let row = document.createElement("tr");
+      let image = document.createElement("td");
+      image.innerHTML = `<img src=${elem.url}>`;
+      image.setAttribute("class", "planterImg");
+      let td1 = document.createElement("td");
+      td1.innerText = elem.commonName;
+      let td2 = document.createElement("td");
+      td2.innerText = elem.bloomTime;
+      let td3 = document.createElement("td");
+      td3.innerText = elem.watering;
+      let td4 = document.createElement("td");
+      td4.innerText = elem.difficultyLevel;
+      let td5 = document.createElement("td");
+      td5.innerText = elem.temperature;
+      let td6 = document.createElement("td");
+      td6.innerText = elem.typeOfSeeds;
+      let td7 = document.createElement("td");
+      td7.innerText = elem.seedsDescription;
+      let td8 = document.createElement("td");
+      td8.innerText = elem.seedsStock;
+      let td9 = document.createElement("td");
+      td9.innerText = elem.seedsCost;
+      let td10 = document.createElement("td");
+      td10.innerText = elem.seedsPerPacket;
+      let td11 = document.createElement("td");
+      td11.innerText = "Add To Cart";
+      td11.style.background = "red";
+      td11.style.color = "white";
+
+      td11.addEventListener("click", addToCart(elem));
+
+      row.append(image, td1, td2, td3, td4, td5, td6, td7, td8,td9,td10,td11);
+
+      document.querySelector("tbody").append(row);
+    });
+  }
+
+  window.addEventListener("load", () => {
+    fetch("http://localhost:8080/seeds", {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(),
+    })
+      .then((e) => {
+        if (e.status == 200 || e.status == 201) {
+          alert("Seed Added");
+          window.location.reload();
+        }
+        return e.json();
+      })
+      .then((data) => {
+        responseObj = data;
+        console.log(responseObj);
+        getData(responseObj);
+      })
+      .catch((error) => console.log(error));
+  });
+
+  function addToCart(elem) {
+    console.log(elem);
+
+    //  //cartobj= JSON.parse(localStorage.getItem("cartobjLS")) || [];
+    //  if (cartobj[elem.id] === undefined) {
+
+    //      cartobj[elem.id] = 1;
+    //      localStorage.setItem("cartobjLS",JSON.stringify(cartobj));
+    //      cartJS = JSON.parse(localStorage.getItem("cartLS")) || [];
+    //      cartJS.push(elem);
+    //      localStorage.setItem("cartLS", JSON.stringify(cartJS));
+    //      return alert("Product Added to Cart");
+    //  }
+    //  else{
+    //      return alert("Product Already in Cart");
+    //  }
+  }
+</script>
